@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`store/webApp/webAppStore should fetch initial webapp state 1`] = `
+{
+  "issues": [],
+}
+`;
