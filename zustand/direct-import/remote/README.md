@@ -1,224 +1,193 @@
-# PPE Micro-Frontend(MFE) React Web Template
-Template project for setting up a **React** + **Vite** + **TypeScript** pnpm monorepo
+# Vite React MFE Web Template
 
-----
+A starter template for setting up a **React** + **Vite** + **TypeScript** monorepo with **pnpm**.
 
-**Table of content**
-- [Features](#features)
-  - [Authentication](#authentication)
+---
+
+## Table of Contents
 - [Setup](#setup)
   - [Prerequisites](#prerequisites)
-- [Packages vs apps](#packages-vs-apps)
-- [KickStart](#kickstart)
-  - [Leyden Integration](#leyden-integration)
+- [Packages vs Apps](#packages-vs-apps)
+- [Kickstart](#kickstart)
   - [Bootstrap](#bootstrap)
-  - [Running Test](#running-tests)
   - [Linting](#linting)
-  - [Build](#build)
-  - [Build Preview Mode](#build-preview-mode)
-  - [Start Application](#start-application)
-    - [Dev Mode](#dev-mode)
-    - [Preview Mode](#preview-mode)
-    - [Static Remote Mode](#static-remote-mode)
-  - [Building the docker image](#building-the-docker-image)
-  - [Running the docker container locally](#running-the-docker-image-locally)
+  - [Building the App](#building-the-app)
+  - [Preview Mode](#preview-mode)
+  - [Running the App](#running-the-app)
+    - [Development Mode](#development-mode)
+    - [Preview Mode](#preview-mode-1)
+  - [Docker Setup](#docker-setup)
+    - [Building Docker Image](#building-docker-image)
+    - [Running Docker Container](#running-docker-container)
 - [Vite Module Federation](#vite-module-federation)
-  - [Set up the remote configuration](#set-up-the-remote-configuration)
-  - [Set up the host configuration](#set-up-the-host-configuration)
-- [Running on Apple silicon](#running-on-apple-silicon)
+  - [Remote Configuration](#remote-configuration)
+  - [Host Configuration](#host-configuration)
 
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
-## Features
-
-### Authentication
-
-* This repository doesn't provide its own authentication mechanism; instead, it relies on the consuming application, namely PPE Journals Production Hub, to manage authentication.
-* This application utilizes the session's JWT token for authentication and rendering. Should the token expire, a modal will appear with instructions for accessing the page.
+---
 
 ## Setup
-Clone this repository into a new folder and reset git to disassociate it from the templates repository.
 
-```
-git clone git@gitlab.et-scm.com:PPE/ppe-create-mfe-template.git ppe-my-app
-cd ppe-my-app
+### Clone the Repository
+
+Start by cloning this repository and removing its Git history to initialize a new project.
+
+```bash
+git clone https://github.com/dummybot88/vite-react-template.git my-app
+cd my-app
 rm -rf .git
 git init
 ```
 
-Locate and replace the string (without the quotes) 'remote' with the lowercase and hyphenated name of the web application, for example, journals-production-hub.
-
-Rename the directory within the project root folder from `helm/ppe-create-mfe-template` to `helm/remote`.
-
-Update the title element in the `web-app` package's template located at `/index.html`.
-
-Modify the title of this README and update the initial description to reflect information about your app.
-
 ### Prerequisites
 
-This repo is a monorepo powered by [pnpm](https://pnpm.io/), a faster alternative to yarn that efficiently manages dependencies between workspaces. 
+This template uses a **monorepo** structure managed by [pnpm](https://pnpm.io/), a fast and efficient dependency manager.
 
-All applications are located in the `apps` folder, and libraries are in the `packages` folder. 
-Pnpm workspaces automatically handle dependencies between these workspaces behind the scenes.
+- All application code resides in the `apps` folder.
+- Shared libraries are in the `packages` folder.
 
-You'll need to install the following on your machine:
-* [Node](https://nodejs.org/en/download) (LTS v18 version)
-* [pnpm](https://pnpm.io/installation#using-npm)
-* [Docker](https://www.docker.com/)
+To get started, you will need to install the following tools on your machine:
 
-Run the app locally by following the [**KickStart**](#kickstart) section in this README.
+- [Node.js](https://nodejs.org/en/download) (LTS version 18 or higher)
+- [pnpm](https://pnpm.io/installation#using-npm)
+- [Docker](https://www.docker.com/)
 
-In the `web-app` package, you'll find an example component located at `src/components/webApp`. This component showcases fetching issue details from the `bff-mock` package (GraphQl API). Additionally, there are unit tests demonstrating how to test these interactions. After understanding the setup, feel free to remove/reuse these examples.
+For local development, follow the steps outlined in the [Kickstart](#kickstart) section.
 
-Now the project is ready to be pushed to your project's Git repository.
+In the `web-app` package, you'll find an example component in `src/components/webApp` that demonstrates how to fetch data from the `api-simulator` package (a mock GraphQL API).
 
-```
-git add -A
-git commit -m "Initial commit"
-git remote add origin git@gitlab.et-scm.com:PPE/ppe-my-app.git
-git push origin master
-```
+Now you're ready to start coding!
 
-Now code your app!
+---
 
-## Packages vs apps
+## Packages vs Apps
 
-This repo contains two types of workspaces:
+This project contains two main types of workspaces:
 
-- `packages`: meant to be published to npm and installed,
-    - `config` - holds application configurations.
-    - `logger` - offers logging capabilities.
-- `apps`: meant to be executed.
-    - `bff-mock`- A Mock Backend for Frontend (BFF) Service Implemented with MSW and GraphQL for the Web Application.
-    - `web-app` - The micro frontend application.
+### Packages
+These are reusable libraries intended for publishing to npm:
+- **config**: Configuration files for the application.
+- **logger**: Logging utilities.
 
-## KickStart
-> ***Note***: Run the following commands in the project's root directory
+### Apps
+These are the executable applications:
+- **api-simulator**: A mock backend-for-frontend (BFF) service using MSW and GraphQL.
+- **web-app**: The micro frontend (MFE) application.
 
-### Leyden Integration
-Steps needed to access the Layden Health Design System and use its React components.
+---
 
-#### Creating an `.npmrc` file
-To begin utilizing the Layden Health Design System, you need to create an `.npmrc` file. This file will allow you to access and use the Layden artifacts. Follow the steps below to create this file:
+## Kickstart
 
-Navigate to the home directory `(~)` and run the following commands
-- Replace <Artifactory_username> with the science ID
-- Generate a new or use an existing Artifactory API and replace <artifactory_api_key>.
-```
-curl -u <Artifactory_username>:<artifactory_api_key> https://rt.artifactory.tio.systems/artifactory/api/npm/npm-health-leyden-virtual/auth/els > .npmrc
-```
-### PPE Web Library integration
-Steps needed to access the PPE Web Library abd use its react component
+> **Note**: All commands below should be run from the root of the project.
 
-#### Add Web library path to the created `.npmrc` file
-Navigate to the home directory `(~)` and run the following commands
-- Replace <Artifactory_username> with the science ID
-- Generate a new or use an existing Artifactory API and replace <artifactory_api_key>.
-```
-curl -u <Artifactory_username>:<artifactory_api_key> https://rt.artifactory.tio.systems/artifactory/api/npm/npm-ppe-internal-virtual/auth/ppe >> .npmrc
-```
-> ***NOTE***: The ppe web library version has to be updated while creating the new repository based on the current latest version. 
+### Bootstrap Dependencies
 
+Install dependencies for all workspaces and generate necessary mock files.
 
-### Bootstrap
-
-Install dependencies for all packages and generate any necessary mock files.
-```
+```bash
 pnpm bootstrap
 ```
-Launch the application in Dev mode; this command will initiate the bff-mock to handle BFF requests.
-```
+
+### Start the Application in Dev Mode
+
+Run the `web-app` in development mode, including the mock backend services.
+
+```bash
 pnpm start:web-app:mock
 ```
 
-### Running Tests
-Run unit and pact tests in all packages. The web-app package's tests are ran first in isolation so that it can generate it's pacts. These are used by the bff-mock package to verify it's API.
-```
-pnpm test
-```
+---
 
-### Linting
-All code in this repository is linted using:
+## Linting
 
-* [ESLint](https://eslint.org/) - Lints JavaScript/Typescript
-* [StyleLint](https://stylelint.io/) - Lints CSS & SCSS
+This repository uses the following linters:
 
-Lint all JavaScript/Typescript and SCSS in all packages.
-```
+- [ESLint](https://eslint.org/) for JavaScript/TypeScript
+- [StyleLint](https://stylelint.io/) for CSS/SCSS
+
+To lint all files in the project, run:
+
+```bash
 pnpm lint
 ```
 
-## Build
-Compile the `web-app` package within the apps workspace, and copy all necessary files (excluding `node_modules`) for the Docker image to `/dist`. Also, include dependent libraries from the packages workspace.
-```
+---
+
+## Building the App
+
+To build the `web-app` and generate the necessary files for Docker:
+
+```bash
 pnpm build
 ```
 
-## Build Preview Mode
+---
 
-Perform a production build in the `/dist` directory using the `--mode` flag set to "preview" in order to utilize the environment variables configured specifically for the preview environment.
+## Running the Application
 
-```
-pnpm build:preview
-```
+### Development Mode
 
-## Start Application
+Run the `web-app` in development mode with mock services like the API simulator.
 
-### Dev Mode
-This command will initiate the application along with the corresponding mock services, such as bff-mock.
-```
+```bash
 pnpm start:web-app:mock
 ```
 
 ### Preview Mode
-To test federated modules locally, the Remote side needs the `RemoteEntry.js` package generated using `vite build`. This is because Vite's Dev mode is bundleless, and you can use `vite build --watch` to achieve a hot update effect. To serve the files from dist, run the following command to boot up a local static web server
-```
+
+For testing federated modules locally, you need the `RemoteEntry.js` file generated by `vite build`. Since Vite's dev mode doesn't bundle files, you can use `vite build --watch` for hot updates. To serve the files from the `dist` directory:
+
+```bash
 pnpm preview:app
 ```
 
-### Static Remote Mode
-Module Federation enables the dynamic loading of modules during runtime. The remote federated module files serve as static assets delivered to clients when they access the application. This configuration facilitates running the application locally without the need for traditional hosting as an application.
-```
-pnpm static-server
-```
+---
 
-## Building the docker image
-Build a local docker image of this app. The docker build requires `pnpm build` be run first to ensure files it depends on are created.
-```
+## Docker Setup
+
+### Building the Docker Image
+
+First, build the app using `pnpm build` to prepare the necessary files, then build the Docker image:
+
+```bash
 docker build -t <name>:<version> .
 ```
 
-### Running the docker container locally
-To run the a container of the build image you will need to inject any environment variables required by the web-server package.
+### Running the Docker Container
 
-```
+Run the Docker container locally, making sure to set any required environment variables.
+
+```bash
 docker run -d -p 4000:4000 <name>:<version>
 ```
-To confirm the application's successful operation within the Docker container, access http://localhost:4000/health. It should return `{"status": "UP"}`.
+
+To check if the app is running correctly inside the Docker container, visit:
+
+```bash
+http://localhost:4000/health
+```
+
+You should see `{"status": "UP"}` as a response.
+
+---
 
 ## Vite Module Federation
-A Vite plugin which supports Module Federation feature.
-* Module federation allows for sharing code between distinct projects, enabling them to dynamically import and utilize each other's code at runtime. 
-* This fosters code reuse and supports the development of micro-frontends and intricate multi-app architectures.
 
-Install the Vite Module Federation plugin in the project by executing the following command in the `web-apps` folder
-```
-pnpm add -D @originjs/vite-plugin-federation
-```
+[Vite Module Federation](https://vitejs.dev/) allows sharing code between different projects and dynamically loading modules at runtime, which is useful for micro-frontends and multi-app architectures.
 
-## Set up the remote configuration
-Modify `vite.config.ts`
-```
+### Remote Configuration
+
+In the `vite.config.ts` file of the remote application, define the modules to expose:
+
+```ts
 import federation from "@originjs/vite-plugin-federation";
+
 export default {
-    plugins: [
+  plugins: [
     react(),
     svgr(),
     federation({
-      name: remote-app,
+      name: 'remote-app',
       filename: 'remoteEntry.js',
-      remotes: {},
-      // Modules to expose
       exposes: {
         './Button': './src/components/Button.tsx'
       },
@@ -228,20 +197,23 @@ export default {
 }
 ```
 
-## Set up the host configuration
-Modify `vite.config.ts`
-```
+### Host Configuration
+
+In the `vite.config.ts` file of the host application, specify the remote app to load:
+
+```ts
 import federation from "@originjs/vite-plugin-federation";
+
 export default {
-    plugins: [
+  plugins: [
     react(),
     svgr(),
     federation({
-      name: host-app,
+      name: 'host-app',
       filename: 'remoteEntry.js',
       exposes: {
         './secure': './src/store/secureStore.ts'
-      }
+      },
       remotes: {
         remote_app: "http://localhost:5001/remoteEntry.js"
       },
@@ -250,16 +222,3 @@ export default {
   ]
 }
 ```
-
-### Running on Apple silicon
-
-Lower versions of node are only compiled for x86 and updating to a node version compiled for arm64 *might* lead to compatibility issues.
-Mac have introduced a "translation" layer between cpu architectures called Rosetta.
-
-```zsh
-softwareupdate --install-rosetta --agree-to-license
-```
-
-The [settings.json](/.vscode/settings.json) contains a Rosetta terminal profile that can be used from within vscode to launch a Rosetta terminal.
-Launching the terminal is as simple as `cmd + shift + p` > `Create new terminal with profile` and then picking Rosetta. This configuration assumes
-you're using `zsh` as your shell. The configuration is easily modifiable if you use prefer any shell.

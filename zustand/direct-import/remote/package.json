@@ -21,7 +21,7 @@
     "preview:app": "pnpm build && pnpm run -r preview"
   },
   "keywords": [],
-  "author": "Elsevier",
+  "author": "remote",
   "license": "UNLICENSED",
   "devDependencies": {
     "@pact-foundation/pact-node": "^6.21.1",

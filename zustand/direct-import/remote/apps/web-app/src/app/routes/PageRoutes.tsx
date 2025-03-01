@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom'
 import Counter from '../../components/webApp/Counter'
 
-export const WEB_APP_PATH = '/web/ppe-web-testing'
+export const WEB_APP_PATH = '/web/counter'
 
 const PageRoutes = () => (
   <Routes>

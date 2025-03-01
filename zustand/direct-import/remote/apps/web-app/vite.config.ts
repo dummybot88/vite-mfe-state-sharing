@@ -15,7 +15,6 @@ export default defineConfig({
       filename: 'remoteEntry.js',
       remotes: {},
       exposes: {
-        './App': './src/components/webApp/WebApp',
         './Counter': './src/components/webApp/Counter',
         './countStore': './src/store/count/countStore'
       },
@@ -26,26 +25,14 @@ export default defineConfig({
     port: config.webApp.port,
     strictPort: true,
     open: true,
-    host: 'localhost',
-    proxy: {
-      [config.bff.api.path]: {
-        target: config.bffMock.url,
-        rewrite: (path: string) => path.replace(config.bff.api.path, '/graphql')
-      }
-    }
+    host: 'localhost'
   },
 
   preview: {
     port: config.webApp.port,
     strictPort: true,
     open: false,
-    host: true,
-    proxy: {
-      [config.bff.api.path]: {
-        target: config.bffMock.url,
-        rewrite: (path: string) => path.replace(config.bff.api.path, '/graphql')
-      }
-    }
+    host: true
   },
 
   build: {
