@@ -1,0 +1,65 @@
+/* Host App Background Color and Layout */
+.host-container {
+  text-align: center;
+  background-color: #f4f4f9;  /* Lighter background for the host */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Host Header Section */
+.host-header {
+  background-color: #282c34; /* Dark background for header */
+  color: white;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Counter Value Styling */
+.host-counter-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.host-counter-value {
+  font-size: 3rem;
+  margin: 0 15px;
+}
+
+/* Button Container in the Header */
+.host-button-container {
+  display: flex;
+  align-items: center;
+}
+
+/* General Button Styling */
+.host-counter-button {
+  background-color: #61dafb; /* Bright color for buttons */
+  border: none;
+  color: #282c34;
+  font-size: 2rem;
+  margin: 0 10px;
+  padding: 10px 15px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+/* Hover and Active States */
+.host-counter-button:hover {
+  background-color: #21a1f1; /* Darker blue on hover */
+}
+
+.host-counter-button:active {
+  transform: scale(0.95); /* Slightly shrink the button when clicked */
+}
+
+/* Adding some space between header and content */
+.main-content {
+  padding: 20px;
+}
