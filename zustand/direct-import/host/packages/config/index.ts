@@ -40,7 +40,7 @@ export const remotes: Remotes = {
 };
 
 export const config = {
-  appName: "remote",
+  appName: "host",
   webApp: {
     port: 8080,
     path: "/web/host",
